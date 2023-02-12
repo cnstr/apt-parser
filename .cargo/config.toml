@@ -1,0 +1,2 @@
+[alias]
+push = "release --sign-tag --sign-commit"
