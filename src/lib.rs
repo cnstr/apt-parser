@@ -4,6 +4,10 @@ pub mod errors;
 pub mod packages;
 pub mod release;
 
+pub use control::*;
+pub use packages::*;
+pub use release::*;
+
 use case_map::CaseMap;
 use errors::KVError;
 use regex::Regex;
