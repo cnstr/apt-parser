@@ -77,7 +77,6 @@ pub fn parse_kv(raw_apt_data: &str) -> Result<CaseMap, KVError> {
 
 		let captures = regex.captures(line);
 		if captures.is_none() {
-			println!("Failed to capture line {line}");
 			return Err(KVError);
 		}
 
@@ -86,7 +85,6 @@ pub fn parse_kv(raw_apt_data: &str) -> Result<CaseMap, KVError> {
 		let value = captures.get(2);
 
 		if key.is_none() || value.is_none() {
-			println!("Failed to capture key or value {line}");
 			return Err(KVError);
 		};
 
