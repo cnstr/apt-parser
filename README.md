@@ -128,7 +128,7 @@ struct Control {
     enhances: Option<Vec<String>>, // => Enhances
     breaks: Option<Vec<String>>, // => Breaks
     conflicts: Option<Vec<String>>, // => Conflicts
-    installed_size: Option<u64>, // => Installed-Size
+    installed_size: Option<i64>, // => Installed-Size
     maintainer: Option<String>, // => Maintainer
     description: Option<String>, // => Description
     homepage: Option<String>, // => Homepage
@@ -197,7 +197,7 @@ struct Package {
     enhances: Option<Vec<String>>, // => Enhances
     breaks: Option<Vec<String>>, // => Breaks
     conflicts: Option<Vec<String>>, // => Conflicts
-    installed_size: Option<u64>, // => Installed-Size
+    installed_size: Option<i64>, // => Installed-Size
     maintainer: Option<String>, // => Maintainer
     description: Option<String>, // => Description
     homepage: Option<String>, // => Homepage

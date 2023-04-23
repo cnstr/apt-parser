@@ -21,7 +21,7 @@ pub struct Control {
 	pub enhances: Option<Vec<String>>,
 	pub breaks: Option<Vec<String>>,
 	pub conflicts: Option<Vec<String>>,
-	pub installed_size: Option<u64>,
+	pub installed_size: Option<i64>,
 	pub maintainer: Option<String>,
 	pub description: Option<String>,
 	pub homepage: Option<String>,
@@ -66,7 +66,7 @@ impl Control {
 		};
 
 		let installed_size = match map.get("Installed-Size") {
-			Some(size) => Some(match size.parse::<u64>() {
+			Some(size) => Some(match size.parse::<i64>() {
 				Ok(size) => size,
 				Err(_) => return Err(APTError::ParseError(ParseError)),
 			}),

@@ -23,7 +23,7 @@ pub struct Package {
 	pub enhances: Option<Vec<String>>,
 	pub breaks: Option<Vec<String>>,
 	pub conflicts: Option<Vec<String>>,
-	pub installed_size: Option<u64>,
+	pub installed_size: Option<i64>,
 	pub maintainer: Option<String>,
 	pub description: Option<String>,
 	pub homepage: Option<String>,
