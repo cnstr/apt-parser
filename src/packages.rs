@@ -1,7 +1,7 @@
 use crate::{
 	case_map::CaseMap,
 	control::Control,
-	errors::{APTError, MissingKeyError, PackagesError},
+	errors::{APTError, MissingKeyError},
 };
 use rayon::prelude::*;
 use std::ops::Index;
@@ -107,7 +107,7 @@ impl Package {
 
 pub struct Packages {
 	pub(crate) packages: Vec<Package>,
-	pub(crate) errors: PackagesError,
+	pub errors: Vec<APTError>,
 }
 
 impl Packages {
@@ -116,11 +116,8 @@ impl Packages {
 		let iter = binding.trim().split("\n\n").par_bridge().into_par_iter();
 
 		let values = iter
-			.map(|package| match Package::from(&package) {
-				Ok(package) => Ok(package),
-				Err(err) => Err(err.to_string()),
-			})
-			.collect::<Vec<Result<Package, String>>>();
+			.map(|package| Package::from(&package))
+			.collect::<Vec<Result<Package, APTError>>>();
 
 		let mut packages = Vec::new();
 		let mut errors = Vec::new();
@@ -131,8 +128,6 @@ impl Packages {
 				Err(err) => errors.push(err),
 			}
 		}
-
-		let errors = PackagesError::new(data, errors);
 
 		Packages { packages, errors }
 	}
@@ -171,10 +166,10 @@ mod tests {
 			Err(err) => panic!("Failed to read file: {}", err),
 		};
 
-		let packages = match Packages::from(&data) {
-			Ok(packages) => packages,
-			Err(err) => panic!("Failed to parse packages: {}", err),
-		};
+		let packages = Packages::from(&data);
+		if !packages.errors.is_empty() {
+			panic!("Failed to parse packages: {:?}", packages.errors);
+		}
 
 		let control = &packages[0];
 		assert_eq!(packages.len(), 415);
@@ -257,10 +252,10 @@ mod tests {
 			Err(err) => panic!("Failed to read file: {}", err),
 		};
 
-		let packages = match Packages::from(&data) {
-			Ok(packages) => packages,
-			Err(err) => panic!("Failed to parse packages: {}", err),
-		};
+		let packages = Packages::from(&data);
+		if !packages.errors.is_empty() {
+			panic!("Failed to parse packages: {:?}", packages.errors);
+		}
 
 		let control = &packages[0];
 		assert_eq!(packages.len(), 6132);

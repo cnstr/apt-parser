@@ -55,49 +55,10 @@ impl Error for MissingKeyError {
 }
 
 #[derive(Debug)]
-pub struct PackagesError {
-	pub data: String,
-	pub errors: Vec<String>,
-	details: String,
-}
-
-impl PackagesError {
-	pub fn new(data: &str, errors: Vec<String>) -> PackagesError {
-		let messages = errors
-			.iter()
-			.map(|e| e.to_string())
-			.collect::<Vec<String>>()
-			.join("\n -");
-
-		PackagesError {
-			data: data.to_owned(),
-			errors,
-			details: format!(
-				"The following errors occurred while parsing multiple packages {0}",
-				messages
-			),
-		}
-	}
-}
-
-impl Display for PackagesError {
-	fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
-		write!(formatter, "{0}", &self.details)
-	}
-}
-
-impl Error for PackagesError {
-	fn description(&self) -> &str {
-		&self.details
-	}
-}
-
-#[derive(Debug)]
 pub enum APTError {
 	KVError(KVError),
 	ParseError(ParseError),
 	MissingKeyError(MissingKeyError),
-	PackagesError(PackagesError),
 }
 
 impl Error for APTError {}
@@ -108,7 +69,6 @@ impl Display for APTError {
 			APTError::KVError(err) => write!(formatter, "{}", err),
 			APTError::ParseError(err) => write!(formatter, "{}", err),
 			APTError::MissingKeyError(err) => write!(formatter, "{}", err),
-			APTError::PackagesError(err) => write!(formatter, "{}", err),
 		}
 	}
 }
@@ -128,11 +88,5 @@ impl From<KVError> for APTError {
 impl From<MissingKeyError> for APTError {
 	fn from(err: MissingKeyError) -> APTError {
 		APTError::MissingKeyError(err)
-	}
-}
-
-impl From<PackagesError> for APTError {
-	fn from(err: PackagesError) -> APTError {
-		APTError::PackagesError(err)
 	}
 }
