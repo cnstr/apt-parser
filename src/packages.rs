@@ -107,10 +107,11 @@ impl Package {
 
 pub struct Packages {
 	pub(crate) packages: Vec<Package>,
+	pub(crate) errors: PackagesError,
 }
 
 impl Packages {
-	pub fn from(data: &str) -> Result<Packages, PackagesError> {
+	pub fn from(data: &str) -> Packages {
 		let binding = data.replace("\r\n", "\n").replace('\0', "");
 		let iter = binding.trim().split("\n\n").par_bridge().into_par_iter();
 
@@ -131,11 +132,9 @@ impl Packages {
 			}
 		}
 
-		if !errors.is_empty() {
-			return Err(PackagesError::new(data, errors));
-		}
+		let errors = PackagesError::new(data, errors);
 
-		Ok(Packages { packages })
+		Packages { packages, errors }
 	}
 
 	pub fn len(&self) -> usize {
