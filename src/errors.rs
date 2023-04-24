@@ -37,7 +37,7 @@ impl MissingKeyError {
 		MissingKeyError {
 			key: key.to_owned(),
 			data: data.to_owned(),
-			details: format!("Failed to find key {0} in data {1}", key, data),
+			details: format!("Failed to find key {0}", key),
 		}
 	}
 }
@@ -73,8 +73,8 @@ impl PackagesError {
 			data: data.to_owned(),
 			errors,
 			details: format!(
-				"The following errors occurred while parsing multiple packages {0}: {1}",
-				messages, data
+				"The following errors occurred while parsing multiple packages {0}",
+				messages
 			),
 		}
 	}
